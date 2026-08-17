@@ -1,0 +1,538 @@
+/* =================================================================
+   DESIGN TOKENS
+   Change anything here and it updates the whole site.
+   ================================================================= */
+:root {
+  /* --- Colors --- */
+  --bg:             #0a0e14;   /* page background, deep circuit-board navy */
+  --bg-raised:      #101722;   /* card / panel background */
+  --border:         #1e2a38;   /* hairline borders */
+  --text:           #e8edf2;   /* primary text */
+  --text-dim:       #7c8ba1;   /* secondary text */
+  --trace:          #00ff9d;   /* signature accent: circuit-trace green */
+  --trace-dim:      #00ff9d33;
+  --amber:          #ffb020;   /* warning-light amber accent */
+  --blue:           #4da8ff;   /* signal-blue accent */
+
+  /* --- Type --- */
+  --font-display: 'Orbitron', sans-serif;      /* headings */
+  --font-mono:    'JetBrains Mono', monospace; /* labels, tags, data */
+  --font-body:    'Inter', sans-serif;         /* paragraphs */
+
+  /* --- Layout --- */
+  --max-width: 900px;
+  --gutter: 6vw;
+}
+
+/* =================================================================
+   RESET / BASE
+   ================================================================= */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* =================================================================
+   BACKGROUND FX — circuit trace, scanlines, hero grid
+   ================================================================= */
+
+/* Vertical glowing trace running down the left edge, connecting sections */
+.trace-line {
+  position: absolute;
+  top: 0;
+  left: 28px;
+  width: 40px;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.trace-line path {
+  fill: none;
+  stroke: var(--trace);
+  stroke-width: 1.5;
+  opacity: 0.35;
+  stroke-dasharray: 6 10;
+  animation: traceFlow 6s linear infinite;
+}
+@keyframes traceFlow {
+  to { stroke-dashoffset: -160; }
+}
+
+/* Subtle CRT scanline texture over the whole page */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.02) 0px,
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* Faint moving grid behind the hero, like a PCB silkscreen */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0.4;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  animation: gridDrift 22s linear infinite;
+}
+@keyframes gridDrift {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 44px 88px, 44px 88px; }
+}
+
+/* =================================================================
+   HERO
+   ================================================================= */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 var(--gutter);
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  color: var(--trace);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  margin-bottom: 1.25rem;
+  opacity: 0.85;
+}
+
+/* Name — glitch effect built from two duplicated text layers via ::before/::after */
+.glitch {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 7vw, 4.5rem);
+  letter-spacing: 0.03em;
+  color: var(--text);
+  position: relative;
+  text-shadow: 0 0 24px var(--trace-dim);
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  overflow: hidden;
+  color: var(--text);
+}
+.glitch::before {
+  color: var(--blue);
+  clip-path: inset(0 0 55% 0);
+  animation: glitchTop 5s infinite ease-in-out;
+}
+.glitch::after {
+  color: var(--amber);
+  clip-path: inset(55% 0 0 0);
+  animation: glitchBottom 5s infinite ease-in-out;
+}
+@keyframes glitchTop {
+  0%, 92%, 100% { transform: translate(0, 0); opacity: 0; }
+  93% { transform: translate(-3px, -1px); opacity: 0.7; }
+  95% { transform: translate(3px, 1px); opacity: 0.7; }
+  97% { transform: translate(-2px, 0); opacity: 0.5; }
+}
+@keyframes glitchBottom {
+  0%, 92%, 100% { transform: translate(0, 0); opacity: 0; }
+  93% { transform: translate(3px, 1px); opacity: 0.7; }
+  95% { transform: translate(-3px, -1px); opacity: 0.7; }
+  97% { transform: translate(2px, 0); opacity: 0.5; }
+}
+
+.hero-role {
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  margin-top: 1.25rem;
+  min-height: 1.6em;
+}
+.cursor {
+  color: var(--trace);
+  animation: blink 1s step-start infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--trace);
+  border: 1px solid var(--trace-dim);
+  background: rgba(0, 255, 157, 0.05);
+  padding: 0.4rem 0.75rem;
+  border-radius: 3px;
+}
+.chip.small { font-size: 0.68rem; padding: 0.3rem 0.6rem; }
+
+.scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 3.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+.scroll-line {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(var(--trace), transparent);
+  animation: scrollPulse 1.6s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+/* =================================================================
+   SECTIONS (shared layout)
+   ================================================================= */
+.section {
+  position: relative;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 6rem var(--gutter) 2rem calc(var(--gutter) + 40px);
+  z-index: 1;
+}
+
+.section-marker {
+  position: absolute;
+  left: calc(var(--gutter) - 20px);
+  top: 6.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.node {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--trace);
+  box-shadow: 0 0 12px 2px var(--trace-dim);
+}
+.designator {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+/* Reveal-on-scroll (class toggled by script.js via IntersectionObserver) */
+.section-inner {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.section-inner.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =================================================================
+   ABOUT
+   ================================================================= */
+.about-text {
+  color: var(--text-dim);
+  max-width: 60ch;
+  margin-bottom: 2.5rem;
+}
+
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+.stack-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.4rem;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.stack-card:hover {
+  border-color: var(--trace-dim);
+  transform: translateY(-3px);
+}
+.stack-icon { font-size: 1.4rem; }
+.stack-card h3 {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  margin: 0.6rem 0 0.4rem;
+  color: var(--text);
+}
+.stack-card p {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+/* =================================================================
+   SOFT SKILLS
+   ================================================================= */
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.skill-pill {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--amber);
+  padding: 0.55rem 1rem;
+  border-radius: 3px;
+}
+
+/* =================================================================
+   PROJECTS
+   ================================================================= */
+.project-card {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.75rem;
+}
+
+.project-visual {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: radial-gradient(circle at center, #0d1620 0%, #060a10 100%);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.radar { position: absolute; inset: 0; }
+.radar::before {
+  content: '';
+  position: absolute;
+  inset: 10%;
+  border: 1px solid var(--trace-dim);
+  border-radius: 50%;
+}
+.radar::after {
+  content: '';
+  position: absolute;
+  inset: 32%;
+  border: 1px solid var(--trace-dim);
+  border-radius: 50%;
+}
+.radar-sweep {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--trace-dim), transparent 35%);
+  animation: sweep 3.5s linear infinite;
+}
+@keyframes sweep {
+  to { transform: rotate(360deg); }
+}
+.radar-dot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--trace);
+  box-shadow: 0 0 8px 2px var(--trace-dim);
+  animation: blip 2s ease-in-out infinite;
+}
+@keyframes blip {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.project-body h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+}
+.project-body p {
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  margin-bottom: 1.2rem;
+}
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .project-card { grid-template-columns: 1fr; }
+  .project-visual { max-width: 200px; margin: 0 auto; }
+}
+
+/* =================================================================
+   EXPERIENCE
+   ================================================================= */
+.exp-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--blue);
+  border-radius: 6px;
+  padding: 1.5rem 1.75rem;
+}
+.exp-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+.exp-head h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+.exp-date {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--blue);
+}
+.exp-role {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 0.8rem;
+}
+.exp-card p:last-child { color: var(--text-dim); font-size: 0.92rem; }
+
+/* =================================================================
+   HOBBY
+   ================================================================= */
+.hobby p { color: var(--text-dim); margin-bottom: 1.5rem; }
+.yt-button {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--bg);
+  background: var(--trace);
+  padding: 0.8rem 1.4rem;
+  border-radius: 4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.yt-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px -6px var(--trace-dim);
+}
+
+/* =================================================================
+   CONTACT
+   ================================================================= */
+.contact-sub {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 1.75rem;
+}
+.contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.btn {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--trace);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.btn-primary {
+  background: var(--trace);
+  color: var(--bg);
+}
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-outline {
+  background: transparent;
+  color: var(--trace);
+}
+.btn-outline:hover { background: rgba(0, 255, 157, 0.08); }
+
+/* =================================================================
+   FOOTER
+   ================================================================= */
+.footer {
+  text-align: center;
+  padding: 3rem 1rem 4rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  position: relative;
+  z-index: 1;
+}
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width: 560px) {
+  :root { --gutter: 8vw; }
+  .trace-line { left: 14px; width: 24px; }
+  .section { padding-left: calc(var(--gutter) + 20px); }
+  .section-marker { left: calc(var(--gutter) - 12px); }
+}
