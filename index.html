@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tushar Bokefod | Embedded Systems Engineer</title>
+
+  <!-- Fonts: Orbitron = technical display headings, JetBrains Mono = labels/data, Inter = body text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============================================= -->
+  <!--  CIRCUIT TRACE (runs down the left of the page,
+        connecting every section like a PCB trace)     -->
+  <!-- ============================================= -->
+  <svg class="trace-line" viewBox="0 0 40 3000" preserveAspectRatio="none" aria-hidden="true">
+    <path id="tracePath" d="M20,0 L20,3000" />
+  </svg>
+
+  <!-- Scanline overlay (subtle CRT/HUD texture) -->
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- ============================================= -->
+  <!--  HERO SECTION                                  -->
+  <!--  Edit your name / title / tagline below         -->
+  <!-- ============================================= -->
+  <header class="hero" id="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">// system_online</p>
+
+      <!-- Glitch effect name: keep data-text identical to the visible text -->
+      <h1 class="glitch" data-text="TUSHAR BOKEFOD">TUSHAR BOKEFOD</h1>
+
+      <p class="hero-role">
+        <span id="typedRole"></span><span class="cursor">_</span>
+      </p>
+
+      <div class="hero-tags">
+        <span class="chip">RASPBERRY PI</span>
+        <span class="chip">OPENCV</span>
+        <span class="chip">EMBEDDED C</span>
+        <span class="chip">PYTHON</span>
+      </div>
+
+      <a href="#projects" class="scroll-cue">
+        <span>scroll</span>
+        <span class="scroll-line"></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ============================================= -->
+  <!--  ABOUT SECTION                                 -->
+  <!-- ============================================= -->
+  <section class="section about" id="about">
+    <div class="section-marker">
+      <span class="node"></span>
+      <span class="designator">U1</span>
+    </div>
+
+    <div class="section-inner">
+      <h2 class="section-title">About</h2>
+      <p class="about-text">
+        Electronics &amp; Telecommunication Engineer who likes taking ideas from
+        breadboard to running code. Comfortable moving between hardware,
+        embedded firmware, and the software that ties it together.
+      </p>
+
+      <!-- Skill / stack cards — duplicate a .stack-card block to add more -->
+      <div class="stack-grid">
+        <div class="stack-card">
+          <span class="stack-icon">☕</span>
+          <h3>Java</h3>
+          <p>Object-oriented fundamentals, building a strong programming base.</p>
+        </div>
+        <div class="stack-card">
+          <span class="stack-icon">🐍</span>
+          <h3>Python</h3>
+          <p>Automation, scripting, and exploring AI / computer vision basics.</p>
+        </div>
+        <div class="stack-card">
+          <span class="stack-icon">⚙️</span>
+          <h3>C / C++</h3>
+          <p>Core logic for system-level and embedded programming.</p>
+        </div>
+        <div class="stack-card">
+          <span class="stack-icon">🌐</span>
+          <h3>Web Design</h3>
+          <p>Responsive, animated, and engaging front-end builds.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!--  SOFT SKILLS SECTION                           -->
+  <!-- ============================================= -->
+  <section class="section soft-skills" id="skills">
+    <div class="section-marker">
+      <span class="node"></span>
+      <span class="designator">U2</span>
+    </div>
+
+    <div class="section-inner">
+      <h2 class="section-title">Soft Skills</h2>
+      <!-- Add / remove .skill-pill items as needed -->
+      <div class="skills-list">
+        <div class="skill-pill">Communication</div>
+        <div class="skill-pill">Teamwork</div>
+        <div class="skill-pill">Problem-Solving</div>
+        <div class="skill-pill">Creativity</div>
+        <div class="skill-pill">Time Management</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!--  PROJECTS SECTION                              -->
+  <!--  Replace the image placeholder with a real     -->
+  <!--  <img src="project1.jpg" ...> if you have one   -->
+  <!-- ============================================= -->
+  <section class="section projects" id="projects">
+    <div class="section-marker">
+      <span class="node"></span>
+      <span class="designator">U3</span>
+    </div>
+
+    <div class="section-inner">
+      <h2 class="section-title">Projects</h2>
+
+      <article class="project-card">
+        <div class="project-visual" aria-hidden="true">
+          <!-- decorative animated "sensor sweep" standing in for a project photo -->
+          <div class="radar">
+            <div class="radar-sweep"></div>
+            <div class="radar-dot" style="--x:30%; --y:40%;"></div>
+            <div class="radar-dot" style="--x:65%; --y:60%;"></div>
+            <div class="radar-dot" style="--x:50%; --y:25%;"></div>
+          </div>
+        </div>
+
+        <div class="project-body">
+          <h3>Self-Driving Car Prototype</h3>
+          <p>
+            Designed and built an autonomous vehicle prototype on Raspberry Pi
+            with real-time OpenCV image processing for lane detection,
+            traffic-light recognition, and obstacle avoidance. Interfaced the
+            Pi with an Arduino Uno and L298N motor driver for motor control,
+            and worked as part of a three-member team through the full
+            build-test-debug cycle.
+          </p>
+          <div class="project-tags">
+            <span class="chip small">Raspberry Pi</span>
+            <span class="chip small">OpenCV</span>
+            <span class="chip small">Arduino Uno</span>
+            <span class="chip small">L298N Driver</span>
+            <span class="chip small">Python</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!--  EXPERIENCE SECTION                            -->
+  <!-- ============================================= -->
+  <section class="section experience" id="experience">
+    <div class="section-marker">
+      <span class="node"></span>
+      <span class="designator">U4</span>
+    </div>
+
+    <div class="section-inner">
+      <h2 class="section-title">Experience</h2>
+
+      <div class="exp-card">
+        <div class="exp-head">
+          <h3>Renu Electronics Pvt. Ltd.</h3>
+          <span class="exp-date">Jan 2025 — May 2025</span>
+        </div>
+        <p class="exp-role">Intern — Embedded Systems</p>
+        <p>
+          Contributed to embedded system testing and development, working on
+          PLC and HMI devices. Designed a self-driving car prototype using
+          Raspberry Pi, OpenCV, and real-time image processing, and
+          integrated motor control using Arduino and motor drivers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!--  HOBBY SECTION                                 -->
+  <!-- ============================================= -->
+  <section class="section hobby" id="hobby">
+    <div class="section-marker">
+      <span class="node"></span>
+      <span class="designator">U5</span>
+    </div>
+
+    <div class="section-inner">
+      <h2 class="section-title">Off Duty</h2>
+      <p>Capturing life moments and sharing them through vlogs.</p>
+      <a href="https://www.youtube.com/@tusharvlogsyt" target="_blank" rel="noopener" class="yt-button">
+        ▶ Watch Tushar Bokefod Vlogs
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!--  CONTACT SECTION                               -->
+  <!-- ============================================= -->
+  <section class="section contact" id="contact">
+    <div class="section-marker">
+      <span class="node"></span>
+      <span class="designator">U6</span>
+    </div>
+
+    <div class="section-inner">
+      <h2 class="section-title">Connect</h2>
+      <p class="contact-sub">// open to internships, collaborations, and interesting problems</p>
+      <div class="contact-buttons">
+        <a href="mailto:tusharbokefod29@gmail.com" class="btn btn-primary">Email Me</a>
+        <a href="https://www.linkedin.com/in/tushar-the-electronics-engineer/" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Built by Tushar Bokefod · <span id="year"></span></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
